@@ -1,6 +1,6 @@
 {
   "name": "grunt-exec",
-  "description": "Grunt task for executing  shell commands.",
+  "description": "Grunt task for executing shell commands.",
   "version": "0.1.0",
   "homepage": "https://github.com/Jake/grunt-exec",
   "author": {
@@ -23,7 +23,7 @@
   "main": "grunt.js",
   "bin": "bin/grunt-exec",
   "engines": {
-    "node": "*"
+    "node": ">=0.6.0"
   },
   "scripts": {
     "test": "grunt test"
@@ -34,5 +34,5 @@
   "devDependencies": {
     "grunt": "~0.3.7"
   },
-  "keywords": []
+  "keywords": ["grunt", "gruntplugin"]
 }
