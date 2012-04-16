@@ -44,6 +44,7 @@ This task is a [multi task][types_of_tasks], meaning that grunt will automatical
 In lieu of a formal styleguide, take care to maintain the existing coding style. Add unit tests for any new or changed functionality. Lint and test your code using [grunt][grunt].
 
 ## Release History
+*   __04/16/2012 - 0.1.1__: Fixed broken links on npm registry page.
 *   __04/08/2012 - 0.1.0__: Initial release.
 
 ## License
