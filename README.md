@@ -27,17 +27,17 @@ This task is a [multi task][types_of_tasks], meaning that grunt will automatical
 ### Example
 
 ```javascript
-    grunt.initConfig({
-        exec: {
-            remove_logs: {
-                command: 'rm -f *.log'
-            }
-            list_files: {
-                command: 'ls -l **',
-                stdout: true
-            }
-        }
-    });
+grunt.initConfig({
+  exec: {
+    remove_logs: {
+      command: 'rm -f *.log'
+    },
+    list_files: {
+      command: 'ls -l **',
+      stdout: true
+    }
+  }
+});
 ```
 
 ## Contributing
