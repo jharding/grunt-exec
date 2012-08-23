@@ -63,6 +63,10 @@ module.exports = function(grunt) {
         callback(err);
         return;
       }
+		if(stderr) {
+			callback(stderr);
+			return;
+		}
       if (logStdout) {
         log.write(stdout);
       }
