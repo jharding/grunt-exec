@@ -1,13 +1,13 @@
-/*
- * grunt-exec
- * https://github.com/Jake/grunt-exec
- *
- * Copyright (c) 2012 Jake Harding
- * Licensed under the MIT license.
- */
+// grunt-exec
+// ----------
+// * GitHub: https://github.com/jharding/grunt-exec
+// * Copyright (c) 2012 Jake Harding
+// * Licensed under the MIT license.
 
 module.exports = function(grunt) {
-  // Grunt utilities.
+  // grunt utilities
+  // ===============
+
   var task = grunt.task;
   var file = grunt.file;
   var utils = grunt.utils;
@@ -18,16 +18,17 @@ module.exports = function(grunt) {
   var config = grunt.config;
   var template = grunt.template;
 
-  // external dependencies
-  var exec = require('child_process').exec;
+  // dependencies
+  // ============
 
-  // ==========================================================================
-  // TASKS
-  // ==========================================================================
+  var cp = require('child_process');
+
+  // task
+  // ====
 
   grunt.registerMultiTask('exec', 'Execute shell commands.', function() {
     var data = this.data;
-   
+
     if (!data.command) {
       grunt.warn('Missing command property.');
       return false;
@@ -41,7 +42,10 @@ module.exports = function(grunt) {
     var done = this.async();
 
     verbose.subhead(data.command);
-    grunt.helper('exec', data.command, data.stdout, data.stderr, function(err) {
+    grunt.helper('exec', data.command, function(err, stdout) {
+      // if configured, log stdout
+      data.stdout && stdout && log.write(stdout);
+
       if (err) {
         grunt.warn(err);
         done(false);
@@ -49,33 +53,21 @@ module.exports = function(grunt) {
         return;
       }
 
-      done();    
+      done();
     });
   });
 
-  // ==========================================================================
-  // HELPERS
-  // ==========================================================================
+  // helper
+  // ======
 
-  grunt.registerHelper('exec', function(command, logStdout, logStderr, callback) {
-    exec(command, function(err, stdout, stderr) {
-      if (err) {
-        callback(err);
+  grunt.registerHelper('exec', function(command, callback) {
+    cp.exec(command, function(err, stdout, stderr) {
+      if (err || stderr) {
+        callback(err || stderr, stdout);
         return;
       }
-		if(stderr) {
-			callback(stderr);
-			return;
-		}
-      if (logStdout) {
-        log.write(stdout);
-      }
 
-      if (logStderr) {
-        log.write(stderr);
-      }
-
-      callback();
+      callback(null, stdout);
     });
   });
 };
