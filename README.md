@@ -23,12 +23,14 @@ Documentation
 
 This task is a [multi task][types_of_tasks], meaning that grunt will automatically iterate over all `exec` targets if a target is not specified.
 
+If the command used outputs to stderr, grunt-exec will display a warning and abort grunt immediately. Grunt will continue processing tasks if the --force command-line option was specified.
+
 [types_of_tasks]: https://github.com/cowboy/grunt/blob/master/docs/types_of_tasks.md
 
 ### Target Properties
+
 *   __command__*(required)*: The shell command to be executed. Must be a string.
 *   __stdout__*(optional)*: Set `true` if you want the stdout to be printed. Defaults to `false`.
-*   __stderr__*(optional)*: Set `true` if you want the stderr to be printed. Defaults to `false`.
 
 ### Example
 
@@ -54,6 +56,7 @@ In lieu of a formal styleguide, take care to maintain the existing coding style.
 Release History
 ===============
 
+*   __08/23/2012 - 0.2.0__: Warn on output to stderr and remove option to log stderr. 
 *   __04/16/2012 - 0.1.1__: Fixed broken links on npm registry page.
 *   __04/08/2012 - 0.1.0__: Initial release.
 
