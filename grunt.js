@@ -1,6 +1,4 @@
 module.exports = function(grunt) {
-
-  // Project configuration.
   grunt.initConfig({
     test: {
       files: ['test/**/*.js']
@@ -14,27 +12,26 @@ module.exports = function(grunt) {
     },
     jshint: {
       options: {
+        // enforcing options
+        bitwise: true,
         curly: true,
-        eqeqeq: true,
-        immed: true,
-        latedef: true,
         newcap: true,
         noarg: true,
-        sub: true,
-        undef: true,
+        noempty: true,
+        nonew: true,
+        trailing: true,
+
+        // relaxing options
         boss: true,
-        eqnull: true,
-        node: true,
-        es5: true
-      },
-      globals: {}
+        es5: true,
+        evil: true,
+        expr: true,
+
+        // environments
+        node: true
+      }
     }
   });
 
-  // Load local tasks.
-  grunt.loadTasks('tasks');
-
-  // Default task.
   grunt.registerTask('default', 'lint test');
-
 };
