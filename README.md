@@ -1,3 +1,4 @@
+[![build status](https://secure.travis-ci.org/jharding/grunt-exec.png)](http://travis-ci.org/jharding/grunt-exec)
 grunt-exec
 ----------
 
