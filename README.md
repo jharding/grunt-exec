@@ -56,6 +56,7 @@ In lieu of a formal styleguide, take care to maintain the existing coding style.
 Release History
 ===============
 
+*   __08/28/2012 - 0.2.1__: Removed grunt as a dependency.
 *   __08/23/2012 - 0.2.0__: Warn on output to stderr and remove option to log stderr. 
 *   __04/16/2012 - 0.1.1__: Fixed broken links on npm registry page.
 *   __04/08/2012 - 0.1.0__: Initial release.
