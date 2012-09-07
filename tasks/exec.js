@@ -33,6 +33,11 @@ module.exports = function(grunt) {
       grunt.warn('Missing command property.');
       return false;
     }
+    
+    // allow callback function before test if string
+    if (utils._.isFunction(data.command)) {  
+        data.command = data.command(); 
+    } 
 
     if (!utils._(data.command).isString()) {
       grunt.warn('The command property must be a string.');
