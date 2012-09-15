@@ -1,12 +1,12 @@
 // grunt-exec
-// ----------
+// ==========
 // * GitHub: https://github.com/jharding/grunt-exec
 // * Copyright (c) 2012 Jake Harding
 // * Licensed under the MIT license.
 
 module.exports = function(grunt) {
   // grunt utilities
-  // ===============
+  // ---------------
 
   var task = grunt.task;
   var file = grunt.file;
@@ -19,12 +19,12 @@ module.exports = function(grunt) {
   var template = grunt.template;
 
   // dependencies
-  // ============
+  // ------------
 
   var cp = require('child_process');
 
   // task
-  // ====
+  // ----
 
   grunt.registerMultiTask('exec', 'Execute shell commands.', function() {
     var data = this.data;
@@ -33,11 +33,10 @@ module.exports = function(grunt) {
       grunt.warn('Missing command property.');
       return false;
     }
-    
-    // allow callback function before test if string
-    if (utils._.isFunction(data.command)) {  
-        data.command = data.command(); 
-    } 
+
+    if (utils._.isFunction(data.command)) {
+        data.command = data.command(grunt);
+    }
 
     if (!utils._(data.command).isString()) {
       grunt.warn('The command property must be a string.');
@@ -51,26 +50,18 @@ module.exports = function(grunt) {
       // if configured, log stdout
       data.stdout && stdout && log.write(stdout);
 
-      if (err) {
-        grunt.warn(err);
-        done(false);
-
-        return;
-      }
+      if (err) { grunt.warn(err); done(false); return; }
 
       done();
     });
   });
 
   // helper
-  // ======
+  // ------
 
   grunt.registerHelper('exec', function(command, callback) {
     cp.exec(command, function(err, stdout, stderr) {
-      if (err || stderr) {
-        callback(err || stderr, stdout);
-        return;
-      }
+      if (err || stderr) { callback(err || stderr, stdout); return; }
 
       callback(null, stdout);
     });
