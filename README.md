@@ -29,7 +29,7 @@ If the command used outputs to stderr, grunt-exec will display a warning and abo
 
 ### Target Properties
 
-*   __command__*(required)*: The shell command to be executed. Must be a string.
+*   __command__*(required)*: The shell command to be executed. Must be a string or a function that returns a string.
 *   __stdout__*(optional)*: Set `true` if you want the stdout to be printed. Defaults to `false`.
 
 ### Example
@@ -42,6 +42,10 @@ grunt.initConfig({
     },
     list_files: {
       command: 'ls -l **',
+      stdout: true
+    },
+    echo_grunt_version: {
+      command: function(grunt) { return 'echo ' + grunt.version; },
       stdout: true
     }
   }
