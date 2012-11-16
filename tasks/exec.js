@@ -46,24 +46,34 @@ module.exports = function(grunt) {
     var done = this.async();
 
     verbose.subhead(data.command);
-    exec(data.command, function(err, stdout) {
-      // if configured, log stdout
-      data.stdout && stdout && log.write(stdout);
 
-      if (err) { grunt.warn(err); done(false); return; }
-
-      done();
+    var p = cp.exec(data.command);
+    p.stdout.on('data', function (d) {
+      if (data.stdout) {
+        log.write(d);
+      }
     });
+    var stderr = [];
+    p.stderr.on('data', function (d) {
+      if (data.stderr) {
+        log.write(d);
+      }
+      stderr.push(d);
+    });
+    p.on('exit', function (code) {
+      if (code >= 126) {
+        grunt.warn('Exited with code: ' + code);
+        done(false);
+      } else if (stderr.length > 0) {
+        // Should it really fail on stderr?
+        grunt.warn(stderr.join(''));
+        done(false);
+      } else {
+        verbose.write('Exited with code: ' + code);
+        done();
+      }
+    });
+    
   });
 
-  // helper
-  // ------
-
-  function exec(command, callback) {
-    cp.exec(command, function(err, stdout, stderr) {
-      if (err || stderr) { callback(err || stderr, stdout); return; }
-
-      callback(null, stdout);
-    });
-  }
 };
