@@ -4,76 +4,57 @@
 // * Copyright (c) 2012 Jake Harding
 // * Licensed under the MIT license.
 
+'use strict';
+
 module.exports = function(grunt) {
-  // grunt utilities
-  // ---------------
-
-  var task = grunt.task;
-  var file = grunt.file;
-  var util = grunt.util;
-  var log = grunt.log;
-  var verbose = grunt.verbose;
-  var fail = grunt.fail;
-  var option = grunt.option;
-  var config = grunt.config;
-  var template = grunt.template;
-
-  // dependencies
-  // ------------
-
-  var cp = require('child_process');
-
-  // task
-  // ----
+  var cp = require('child_process')
+    , f = require('util').format
+    , util = grunt.util
+    , log = grunt.log
+    , verbose = grunt.verbose;
 
   grunt.registerMultiTask('exec', 'Execute shell commands.', function() {
-    var data = this.data;
+    var data = this.data
+      , opts = {
+          stdout: data.stdout !== undefined ? data.stdout : true
+        , stderr: data.stderr !== undefined ? data.stderr : true
+        }
+      , command
+      , process
+      , done = this.async();
 
-    if (!data.command) {
-      grunt.warn('Missing command property.');
-      return false;
+    // allow for command to be specified in either
+    // 'command' or 'cmd' property
+    command = data.command || data.cmd;
+
+    if (!command) {
+      log.error('Missing command property.');
+      return done(false);
     }
 
-    if (util._.isFunction(data.command)) {
-        data.command = data.command(grunt);
+    if (util._.isFunction(command)) {
+      command = command(grunt);
     }
 
-    if (!util._(data.command).isString()) {
-      grunt.warn('The command property must be a string.');
-      return false;
+    if (!util._(command).isString()) {
+      log.error('Command property must be a string.');
+      return done(false);
     }
 
-    var done = this.async();
+    verbose.subhead(command);
+    process = cp.exec(command);
 
-    verbose.subhead(data.command);
+    opts.stdout && process.stdout.on('data', function (d) { log.write(d); });
+    opts.stderr && process.stderr.on('data', function (d) { log.error(d); });
 
-    var p = cp.exec(data.command);
-    p.stdout.on('data', function (d) {
-      if (data.stdout) {
-        log.write(d);
+    process.on('exit', function(code) {
+      if (code > 0) {
+        log.error(f('Exited with code: %d.', code));
+        return done(false);
       }
+
+      verbose.ok(f('Exited with code: %d.', code));
+      done();
     });
-    var stderr = [];
-    p.stderr.on('data', function (d) {
-      if (data.stderr) {
-        log.write(d);
-      }
-      stderr.push(d);
-    });
-    p.on('exit', function (code) {
-      if (code >= 126) {
-        grunt.warn('Exited with code: ' + code);
-        done(false);
-      } else if (stderr.length > 0) {
-        // Should it really fail on stderr?
-        grunt.warn(stderr.join(''));
-        done(false);
-      } else {
-        verbose.write('Exited with code: ' + code);
-        done();
-      }
-    });
-    
   });
-
 };
