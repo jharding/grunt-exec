@@ -1,79 +1,24 @@
+'use strict';
 
+var grunt = require('grunt')
+  , path = require('path')
+  , fs = require('fs')
+  , assert = require('assert')
+  , testDir = path.join(process.cwd(), 'test')
+  , opts = { gruntfile: path.join(testDir, 'Gruntfile.js') };
 
-/*
-  ======== A Handy Little Nodeunit Reference ========
-  https://github.com/caolan/nodeunit
+grunt.tasks('exec', opts, function() {
+  var test1OutputPath = path.join(testDir, 'test1')
+    , test2OutputPath = path.join(testDir, 'test2')
+    , test1Expected = 'bruce willis was dead\n'
+    , test2Expected = 'grunt@' + grunt.version + '\n';
 
-  Test methods:
-    test.expect(numAssertions)
-    test.done()
-  Test assertions:
-    test.ok(value, [message])
-    test.equal(actual, expected, [message])
-    test.notEqual(actual, expected, [message])
-    test.deepEqual(actual, expected, [message])
-    test.notDeepEqual(actual, expected, [message])
-    test.strictEqual(actual, expected, [message])
-    test.notStrictEqual(actual, expected, [message])
-    test.throws(block, [error], [message])
-    test.doesNotThrow(block, [error], [message])
-    test.ifError(value)
-*/
+  assert.equal(fs.readFileSync(test1OutputPath, 'utf8'), test1Expected);
+  assert.equal(fs.readFileSync(test2OutputPath, 'utf8'), test2Expected);
 
-var grunt = require('grunt');
-var cp = require('child_process');
+  // clean up
+  fs.unlinkSync(test1OutputPath);
+  fs.unlinkSync(test2OutputPath);
 
-var _exec = cp.exec;
-var stubs = {
-  err: 'child process error',
-  stdout: 'stdout',
-  stderr: 'stderr'
-};
-
-grunt.loadTasks('tasks');
-
-exports['grunt-exec'] = {
-  tearDown: function(callback) {
-    cp.exec = _exec;
-    callback();
-  },
-
-  'no errors': function(test) {
-    cp.exec = function(command, callback) {
-      callback(null, stubs.stdout, null);
-    };
-
-    test.expect(2);
-    grunt.helper('exec', 'ls', function(err, stdout) {
-      test.equal(err, null);
-      test.equal(stdout, stubs.stdout);
-    });
-    test.done();
-  },
-
-  'child_process exec throws error': function(test) {
-    cp.exec = function(command, callback) {
-      callback(stubs.err, stubs.stdout, null);
-    };
-
-    test.expect(2);
-    grunt.helper('exec', 'ls', function(err, stdout) {
-      test.equal(err, stubs.err);
-      test.equal(stdout, stubs.stdout);
-    });
-    test.done();
-  },
-
-  'command errors out': function(test) {
-    cp.exec = function(command, callback) {
-      callback(null, stubs.stdout, stubs.err);
-    };
-
-    test.expect(2);
-    grunt.helper('exec', 'ls', function(err, stdout) {
-      test.equal(err, stubs.err);
-      test.equal(stdout, stubs.stdout);
-    });
-    test.done();
-  }
-};
+  grunt.log.ok('test passed');
+});
