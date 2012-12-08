@@ -29,7 +29,8 @@
     "test": "grunt test"
   },
   "devDependencies": {
-    "grunt": "~0.3.7"
+    "grunt": "~0.4.0a",
+    "grunt-cli": "~0.1.0"
   },
   "keywords": [
     "grunt",

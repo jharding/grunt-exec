@@ -10,7 +10,7 @@ module.exports = function(grunt) {
 
   var task = grunt.task;
   var file = grunt.file;
-  var utils = grunt.utils;
+  var util = grunt.util;
   var log = grunt.log;
   var verbose = grunt.verbose;
   var fail = grunt.fail;
@@ -34,11 +34,11 @@ module.exports = function(grunt) {
       return false;
     }
 
-    if (utils._.isFunction(data.command)) {
+    if (util._.isFunction(data.command)) {
         data.command = data.command(grunt);
     }
 
-    if (!utils._(data.command).isString()) {
+    if (!util._(data.command).isString()) {
       grunt.warn('The command property must be a string.');
       return false;
     }
@@ -46,24 +46,34 @@ module.exports = function(grunt) {
     var done = this.async();
 
     verbose.subhead(data.command);
-    grunt.helper('exec', data.command, function(err, stdout) {
-      // if configured, log stdout
-      data.stdout && stdout && log.write(stdout);
 
-      if (err) { grunt.warn(err); done(false); return; }
-
-      done();
+    var p = cp.exec(data.command);
+    p.stdout.on('data', function (d) {
+      if (data.stdout) {
+        log.write(d);
+      }
     });
+    var stderr = [];
+    p.stderr.on('data', function (d) {
+      if (data.stderr) {
+        log.write(d);
+      }
+      stderr.push(d);
+    });
+    p.on('exit', function (code) {
+      if (code >= 126) {
+        grunt.warn('Exited with code: ' + code);
+        done(false);
+      } else if (stderr.length > 0) {
+        // Should it really fail on stderr?
+        grunt.warn(stderr.join(''));
+        done(false);
+      } else {
+        verbose.write('Exited with code: ' + code);
+        done();
+      }
+    });
+    
   });
 
-  // helper
-  // ------
-
-  grunt.registerHelper('exec', function(command, callback) {
-    cp.exec(command, function(err, stdout, stderr) {
-      if (err || stderr) { callback(err || stderr, stdout); return; }
-
-      callback(null, stdout);
-    });
-  });
 };
