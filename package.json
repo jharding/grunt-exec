@@ -28,7 +28,7 @@
     "test": "/usr/bin/env node test/test.js"
   },
   "devDependencies": {
-    "grunt": "git://github.com/gruntjs/grunt.git#devel",
+    "grunt": "git://github.com/gruntjs/grunt.git",
     "grunt-cli": "~0.1",
     "grunt-contrib-jshint": "*"
   },
