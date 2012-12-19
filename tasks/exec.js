@@ -21,6 +21,7 @@ module.exports = function(grunt) {
         }
       , command
       , process
+      , args = [].slice.call(arguments, 1) // first argument is target
       , done = this.async();
 
     // allow for command to be specified in either
@@ -33,7 +34,7 @@ module.exports = function(grunt) {
     }
 
     if (util._.isFunction(command)) {
-      command = command(grunt);
+      command = command.apply(grunt, args);
     }
 
     if (!util._(command).isString()) {

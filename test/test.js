@@ -5,20 +5,29 @@ var grunt = require('grunt')
   , fs = require('fs')
   , assert = require('assert')
   , testDir = path.join(process.cwd(), 'test')
-  , opts = { gruntfile: path.join(testDir, 'Gruntfile.js') };
+  , opts = { gruntfile: path.join(testDir, 'Gruntfile.js') }
+  , tasks = ['exec:test1', 'exec:test2', 'exec:test3:42:love'];
 
-grunt.tasks('exec', opts, function() {
-  var test1OutputPath = path.join(testDir, 'test1')
-    , test2OutputPath = path.join(testDir, 'test2')
-    , test1Expected = 'bruce willis was dead\n'
-    , test2Expected = 'grunt@' + grunt.version + '\n';
+grunt.tasks(tasks, opts, function() {
+  var tests = [
+        { name: 'test1', expected: 'bruce willis was dead\n' }
+      , { name: 'test2' , expected: 'grunt@' + grunt.version + '\n' }
+      , {
+          name: 'test3'
+        , expected: [
+            'the answer to life is 42', 'thoughts on tacos? love', ''
+          ].join('\n')
+        }
+      ]
+    , outputPath;
 
-  assert.equal(fs.readFileSync(test1OutputPath, 'utf8'), test1Expected);
-  assert.equal(fs.readFileSync(test2OutputPath, 'utf8'), test2Expected);
+  tests.forEach(function(test) {
+    outputPath = path.join(testDir, test.name);
+    assert.equal(fs.readFileSync(outputPath, 'utf8'), test.expected);
 
-  // clean up
-  fs.unlinkSync(test1OutputPath);
-  fs.unlinkSync(test2OutputPath);
+    // clean up
+    fs.unlinkSync(outputPath);
 
-  grunt.log.ok('test passed');
+    grunt.log.ok(test.name +' passed');
+  });
 });
