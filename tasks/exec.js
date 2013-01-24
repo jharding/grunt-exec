@@ -59,11 +59,11 @@ module.exports = function(grunt) {
   // helper
   // ------
 
-  grunt.registerHelper('exec', function(command, callback) {
+  function execTask(command, callback) {
     cp.exec(command, function(err, stdout, stderr) {
       if (err || stderr) { callback(err || stderr, stdout); return; }
 
       callback(null, stdout);
     });
-  });
+  };
 };
