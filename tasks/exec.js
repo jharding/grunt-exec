@@ -4,8 +4,6 @@
 // * Copyright (c) 2012 Jake Harding
 // * Licensed under the MIT license.
 
-'use strict';
-
 module.exports = function(grunt) {
   var cp = require('child_process')
     , f = require('util').format
@@ -15,13 +13,13 @@ module.exports = function(grunt) {
 
   grunt.registerMultiTask('exec', 'Execute shell commands.', function() {
     var data = this.data
-      , opts = {
+      , o = {
           stdout: data.stdout !== undefined ? data.stdout : true
         , stderr: data.stderr !== undefined ? data.stderr : true
         }
       , command
-      , process
-      , args = [].slice.call(arguments, 1) // first argument is target
+      , childProcess
+      , args = [].slice.call(arguments, 0)
       , done = this.async();
 
     // allow for command to be specified in either
@@ -37,18 +35,18 @@ module.exports = function(grunt) {
       command = command.apply(grunt, args);
     }
 
-    if (!util._(command).isString()) {
+    if (!util._.isString(command)) {
       log.error('Command property must be a string.');
       return done(false);
     }
 
     verbose.subhead(command);
-    process = cp.exec(command);
+    childProcess = cp.exec(command);
 
-    opts.stdout && process.stdout.on('data', function (d) { log.write(d); });
-    opts.stderr && process.stderr.on('data', function (d) { log.error(d); });
+    o.stdout && childProcess.stdout.on('data', function (d) { log.write(d); });
+    o.stderr && childProcess.stderr.on('data', function (d) { log.error(d); });
 
-    process.on('exit', function(code) {
+    childProcess.on('exit', function(code) {
       if (code > 0) {
         log.error(f('Exited with code: %d.', code));
         return done(false);
