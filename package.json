@@ -1,7 +1,7 @@
 {
   "name": "grunt-exec",
   "description": "Grunt task for executing shell commands.",
-  "version": "0.4.0-dev",
+  "version": "0.4.0rc1",
   "homepage": "https://github.com/jharding/grunt-exec",
   "author": {
     "name": "Jake Harding",
@@ -28,9 +28,9 @@
     "test": "/usr/bin/env node test/test.js"
   },
   "devDependencies": {
-    "grunt": "git://github.com/gruntjs/grunt.git",
+    "grunt": "0.4.0rc7",
     "grunt-cli": "~0.1",
-    "grunt-contrib-jshint": "*"
+    "grunt-contrib-jshint": "0.1.1rc6"
   },
   "keywords": [
     "grunt",

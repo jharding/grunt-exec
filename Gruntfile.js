@@ -2,9 +2,9 @@ module.exports = function(grunt) {
   grunt.initConfig({
     exec: {
       remove_logs: {
-        command: 'rm -f *.log',
-        stdout: false,
-        stderr: false
+        command: 'rm -f *.log'
+      , stdout: false
+      , stderr: false
       }
     , list_files: {
         cmd: 'ls -l **'
@@ -23,13 +23,11 @@ module.exports = function(grunt) {
         }
       }
     }
+
   , jshint: {
-      all: ['Gruntfile.js', 'tasks/*.js', 'test/*.js']
-    , options: {
+      options: {
       // enforcing options
-        bitwise: true
-      , camelcase: true
-      , curly: true
+        curly: true
       , forin: true
       , newcap: true
       , noarg: true
@@ -50,9 +48,14 @@ module.exports = function(grunt) {
       // environments
       , node: true
       }
+    , tasks: ['tasks/*.js']
+    , tests: ['test/*.js']
+    , gruntfile: ['Gruntfile.js']
     }
   });
 
   grunt.loadTasks('tasks');
   grunt.loadNpmTasks('grunt-contrib-jshint');
+
+  grunt.registerTask('lint', 'jshint');
 };
