@@ -27,10 +27,12 @@
   "scripts": {
     "test": "/usr/bin/env node test/test.js"
   },
+  "peerDependencies": {
+    "grunt": "~0.4"
+  },
   "devDependencies": {
-    "grunt": "0.4.0rc7",
-    "grunt-cli": "~0.1",
-    "grunt-contrib-jshint": "0.1.1rc6"
+    "grunt": "~0.4",
+    "grunt-contrib-jshint": "~0.1"
   },
   "keywords": [
     "grunt",

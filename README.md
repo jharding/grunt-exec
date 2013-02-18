@@ -2,7 +2,7 @@
 grunt-exec
 ==========
 
-> Grunt plugin for executing shell commands.
+Grunt plugin for executing shell commands.
 
 Installation
 ------------
