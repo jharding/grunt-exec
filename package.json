@@ -1,7 +1,7 @@
 {
   "name": "grunt-exec",
   "description": "Grunt task for executing shell commands.",
-  "version": "0.3.0",
+  "version": "0.4.0rc1",
   "homepage": "https://github.com/jharding/grunt-exec",
   "author": {
     "name": "Jake Harding",
@@ -20,19 +20,23 @@
       "url": "https://github.com/jharding/grunt-exec/blob/master/LICENSE-MIT"
     }
   ],
-  "main": "grunt.js",
-  "bin": "bin/grunt-exec",
+  "main": "Gruntfile.js",
   "engines": {
-    "node": ">=0.6.0"
+    "node": ">=0.8.0"
   },
   "scripts": {
-    "test": "grunt test"
+    "test": "/usr/bin/env node test/test.js"
+  },
+  "peerDependencies": {
+    "grunt": "~0.4"
   },
   "devDependencies": {
-    "grunt": "~0.3.7"
+    "grunt": "~0.4",
+    "grunt-contrib-jshint": "~0.1"
   },
   "keywords": [
     "grunt",
-    "gruntplugin"
+    "gruntplugin",
+    "shell"
   ]
 }

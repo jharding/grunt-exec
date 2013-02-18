@@ -5,65 +5,55 @@
 // * Licensed under the MIT license.
 
 module.exports = function(grunt) {
-  // grunt utilities
-  // ---------------
-
-  var task = grunt.task;
-  var file = grunt.file;
-  var utils = grunt.utils;
-  var log = grunt.log;
-  var verbose = grunt.verbose;
-  var fail = grunt.fail;
-  var option = grunt.option;
-  var config = grunt.config;
-  var template = grunt.template;
-
-  // dependencies
-  // ------------
-
-  var cp = require('child_process');
-
-  // task
-  // ----
+  var cp = require('child_process')
+    , f = require('util').format
+    , util = grunt.util
+    , log = grunt.log
+    , verbose = grunt.verbose;
 
   grunt.registerMultiTask('exec', 'Execute shell commands.', function() {
-    var data = this.data;
+    var data = this.data
+      , o = {
+          stdout: data.stdout !== undefined ? data.stdout : true
+        , stderr: data.stderr !== undefined ? data.stderr : true
+        }
+      , command
+      , childProcess
+      , args = [].slice.call(arguments, 0)
+      , done = this.async();
 
-    if (!data.command) {
-      grunt.warn('Missing command property.');
-      return false;
+    // allow for command to be specified in either
+    // 'command' or 'cmd' property
+    command = data.command || data.cmd;
+
+    if (!command) {
+      log.error('Missing command property.');
+      return done(false);
     }
 
-    if (utils._.isFunction(data.command)) {
-        data.command = data.command(grunt);
+    if (util._.isFunction(command)) {
+      command = command.apply(grunt, args);
     }
 
-    if (!utils._(data.command).isString()) {
-      grunt.warn('The command property must be a string.');
-      return false;
+    if (!util._.isString(command)) {
+      log.error('Command property must be a string.');
+      return done(false);
     }
 
-    var done = this.async();
+    verbose.subhead(command);
+    childProcess = cp.exec(command);
 
-    verbose.subhead(data.command);
-    grunt.helper('exec', data.command, function(err, stdout) {
-      // if configured, log stdout
-      data.stdout && stdout && log.write(stdout);
+    o.stdout && childProcess.stdout.on('data', function (d) { log.write(d); });
+    o.stderr && childProcess.stderr.on('data', function (d) { log.error(d); });
 
-      if (err) { grunt.warn(err); done(false); return; }
+    childProcess.on('exit', function(code) {
+      if (code > 0) {
+        log.error(f('Exited with code: %d.', code));
+        return done(false);
+      }
 
+      verbose.ok(f('Exited with code: %d.', code));
       done();
-    });
-  });
-
-  // helper
-  // ------
-
-  grunt.registerHelper('exec', function(command, callback) {
-    cp.exec(command, function(err, stdout, stderr) {
-      if (err || stderr) { callback(err || stderr, stdout); return; }
-
-      callback(null, stdout);
     });
   });
 };
