@@ -14,11 +14,11 @@ module.exports = function(grunt) {
   grunt.registerMultiTask('exec', 'Execute shell commands.', function() {
     var data = this.data
       , o = {
-          stdout: data.stdout !== undefined ? data.stdout : true
+          cwd: data.cwd
+        , stdout: data.stdout !== undefined ? data.stdout : true
         , stderr: data.stderr !== undefined ? data.stderr : true
         }
       , command
-      , cpopts = data.cwd && {cwd: data.cwd}
       , childProcess
       , args = [].slice.call(arguments, 0)
       , done = this.async();
@@ -42,7 +42,7 @@ module.exports = function(grunt) {
     }
 
     verbose.subhead(command);
-    childProcess = cp.exec(command, cpopts);
+    childProcess = o.cwd ? cp.exec(command, { cwd: o.cwd }) : cp.exec(command);
 
     o.stdout && childProcess.stdout.on('data', function (d) { log.write(d); });
     o.stderr && childProcess.stderr.on('data', function (d) { log.error(d); });
