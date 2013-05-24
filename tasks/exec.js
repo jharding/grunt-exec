@@ -18,6 +18,7 @@ module.exports = function(grunt) {
         , stderr: data.stderr !== undefined ? data.stderr : true
         }
       , command
+      , cpopts = data.cwd && {cwd: data.cwd}
       , childProcess
       , args = [].slice.call(arguments, 0)
       , done = this.async();
@@ -41,7 +42,7 @@ module.exports = function(grunt) {
     }
 
     verbose.subhead(command);
-    childProcess = cp.exec(command);
+    childProcess = cp.exec(command, cpopts);
 
     o.stdout && childProcess.stdout.on('data', function (d) { log.write(d); });
     o.stderr && childProcess.stderr.on('data', function (d) { log.error(d); });
