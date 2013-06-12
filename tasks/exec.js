@@ -13,10 +13,12 @@ module.exports = function(grunt) {
 
   grunt.registerMultiTask('exec', 'Execute shell commands.', function() {
     var data = this.data
+	  , options = this.options({ exitCode: 0 })
       , o = {
           cwd: data.cwd
         , stdout: data.stdout !== undefined ? data.stdout : true
         , stderr: data.stderr !== undefined ? data.stderr : true
+		, exitCode: options.exitCode
         }
       , command
       , childProcess
@@ -27,6 +29,8 @@ module.exports = function(grunt) {
     // 'command' or 'cmd' property
     command = data.command || data.cmd;
 
+	verbose.writeln('Expecting exit code ' + o.exitCode);
+	
     if (!command) {
       log.error('Missing command property.');
       return done(false);
@@ -48,7 +52,7 @@ module.exports = function(grunt) {
     o.stderr && childProcess.stderr.on('data', function (d) { log.error(d); });
 
     childProcess.on('exit', function(code) {
-      if (code > 0) {
+      if (code > 0 && code !== o.exitCode) {
         log.error(f('Exited with code: %d.', code));
         return done(false);
       }
