@@ -52,7 +52,7 @@ module.exports = function(grunt) {
     o.stderr && childProcess.stderr.on('data', function (d) { log.error(d); });
 
     childProcess.on('exit', function(code) {
-      if (code !== o.exitCode) {
+      if (code > 0 && code !== o.exitCode) {
         log.error(f('Exited with code: %d.', code));
         return done(false);
       }
