@@ -19,6 +19,7 @@ module.exports = function(grunt) {
         , stderr: data.stderr !== undefined ? data.stderr : true
         }
       , command
+      , maxBuffer
       , childProcess
       , args = [].slice.call(arguments, 0)
       , done = this.async();
@@ -26,6 +27,7 @@ module.exports = function(grunt) {
     // allow for command to be specified in either
     // 'command' or 'cmd' property
     command = data.command || data.cmd;
+    maxBuffer = data.maxBuffer || 1024*1024;
 
     if (!command) {
       log.error('Missing command property.');
@@ -42,7 +44,7 @@ module.exports = function(grunt) {
     }
 
     verbose.subhead(command);
-    childProcess = o.cwd ? cp.exec(command, { cwd: o.cwd }) : cp.exec(command);
+    childProcess = o.cwd ? cp.exec(command, { cwd: o.cwd, maxBuffer: maxBuffer}) : cp.exec(command, {maxBuffer: maxBuffer});
 
     o.stdout && childProcess.stdout.on('data', function (d) { log.write(d); });
     o.stderr && childProcess.stderr.on('data', function (d) { log.error(d); });
