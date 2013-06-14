@@ -19,10 +19,14 @@ module.exports = function(grunt) {
       }
     , test4: {
         cmd: function(){
-          return 'echo "you can use callback, and error, stdout, stderr can be used as arguments" > test4';
+          return 'echo "you can use callback, and error, stdout, stderr can be used as arguments"';
         },
         callback: function(error, stdout, stderr){
-          console.log('stdout : ' + stdout);
+          var fs = require('fs');
+          var path = require('path');
+          var outputPath = path.resolve(process.cwd(), 'test4');
+          console.log('outputPath : ' + outputPath);
+          fs.writeFileSync(outputPath, stdout, 'utf-8');
         }
       }
     }
