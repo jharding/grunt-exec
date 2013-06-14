@@ -22,6 +22,15 @@ module.exports = function(grunt) {
           return 'echo ' + formattedName;
         }
       }
+    , test_callback: {
+        cmd : 'ls -h',
+        callback : function(error, stdout, stderr){
+          var cp = require('child_process');
+          var util = require('util');
+          console.log(util.inspect(cp));
+          console.log('callback is ok, you can use error,stdout,stderr as arguments');
+        }
+      }
     }
 
   , jshint: {

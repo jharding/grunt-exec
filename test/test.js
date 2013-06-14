@@ -4,7 +4,7 @@ var grunt = require('grunt')
   , assert = require('assert')
   , testDir = path.join(process.cwd(), 'test')
   , opts = { gruntfile: path.join(testDir, 'Gruntfile.js') }
-  , tasks = ['exec:test1', 'exec:test2', 'exec:test3:42:love'];
+  , tasks = ['exec:test1', 'exec:test2', 'exec:test3:42:love', 'exec:test4'];
 
 grunt.tasks(tasks, opts, function() {
   var tests = [
@@ -15,6 +15,10 @@ grunt.tasks(tasks, opts, function() {
         , expected: [
             'the answer to life is 42', 'thoughts on tacos? love', ''
           ].join('\n')
+        }
+      , {
+          name: 'test4'
+        , expected:'you can use callback, and error, stdout, stderr can be used as arguments\n'
         }
       ]
     , outputPath;

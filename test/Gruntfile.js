@@ -17,6 +17,14 @@ module.exports = function(grunt) {
           return 'echo "' + text + '" > test3';
         }
       }
+    , test4: {
+        cmd: function(){
+          return 'echo "you can use callback, and error, stdout, stderr can be used as arguments" > test4';
+        },
+        callback: function(error, stdout, stderr){
+          console.log('stdout : ' + stdout);
+        }
+      }
     }
   });
 

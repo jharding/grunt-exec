@@ -17,6 +17,7 @@ module.exports = function(grunt) {
           cwd: data.cwd
         , stdout: data.stdout !== undefined ? data.stdout : true
         , stderr: data.stderr !== undefined ? data.stderr : true
+        , callback : util._.isFunction(data.callback) ? data.callback : function(){}
         }
       , command
       , childProcess
@@ -42,7 +43,7 @@ module.exports = function(grunt) {
     }
 
     verbose.subhead(command);
-    childProcess = o.cwd ? cp.exec(command, { cwd: o.cwd }) : cp.exec(command);
+    childProcess = o.cwd ? cp.exec(command, { cwd: o.cwd }, o.callback) : cp.exec(command, o.callback);
 
     o.stdout && childProcess.stdout.on('data', function (d) { log.write(d); });
     o.stderr && childProcess.stderr.on('data', function (d) { log.error(d); });
