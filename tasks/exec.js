@@ -7,7 +7,7 @@
 module.exports = function(grunt) {
   var cp = require('child_process')
     , f = require('util').format
-    , util = grunt.util
+    , _ = grunt.util._
     , log = grunt.log
     , verbose = grunt.verbose;
 
@@ -16,6 +16,7 @@ module.exports = function(grunt) {
       , execOptions = {}
       , stdout = data.stdout !== undefined ? data.stdout : true
       , stderr = data.stderr !== undefined ? data.stderr : true
+      , callback = _.isFunction(data.callback) ? data.callback : function() {}
       , command
       , childProcess
       , args = [].slice.call(arguments, 0)
@@ -33,17 +34,17 @@ module.exports = function(grunt) {
       return done(false);
     }
 
-    if (util._.isFunction(command)) {
+    if (_.isFunction(command)) {
       command = command.apply(grunt, args);
     }
 
-    if (!util._.isString(command)) {
+    if (!_.isString(command)) {
       log.error('Command property must be a string.');
       return done(false);
     }
 
     verbose.subhead(command);
-    childProcess = cp.exec(command, execOptions);
+    childProcess = cp.exec(command, execOptions, callback);
 
     stdout && childProcess.stdout.on('data', function (d) { log.write(d); });
     stderr && childProcess.stderr.on('data', function (d) { log.error(d); });
