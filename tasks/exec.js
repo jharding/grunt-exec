@@ -13,13 +13,10 @@ module.exports = function(grunt) {
 
   grunt.registerMultiTask('exec', 'Execute shell commands.', function() {
     var data = this.data
-      , o = {
-          cwd: data.cwd
-        , stdout: data.stdout !== undefined ? data.stdout : true
-        , stderr: data.stderr !== undefined ? data.stderr : true
-        }
+      , execOptions = {}
+      , stdout = data.stdout !== undefined ? data.stdout : true
+      , stderr = data.stderr !== undefined ? data.stderr : true
       , command
-      , maxBuffer
       , childProcess
       , args = [].slice.call(arguments, 0)
       , done = this.async();
@@ -27,7 +24,9 @@ module.exports = function(grunt) {
     // allow for command to be specified in either
     // 'command' or 'cmd' property
     command = data.command || data.cmd;
-    maxBuffer = data.maxBuffer || 1024*1024;
+
+    data.cwd && (execOptions.cwd = data.cwd);
+    data.maxBuffer && (execOptions.maxBuffer = data.maxBuffer);
 
     if (!command) {
       log.error('Missing command property.');
@@ -44,10 +43,10 @@ module.exports = function(grunt) {
     }
 
     verbose.subhead(command);
-    childProcess = o.cwd ? cp.exec(command, { cwd: o.cwd, maxBuffer: maxBuffer}) : cp.exec(command, {maxBuffer: maxBuffer});
+    childProcess = cp.exec(command, execOptions);
 
-    o.stdout && childProcess.stdout.on('data', function (d) { log.write(d); });
-    o.stderr && childProcess.stderr.on('data', function (d) { log.error(d); });
+    stdout && childProcess.stdout.on('data', function (d) { log.write(d); });
+    stderr && childProcess.stderr.on('data', function (d) { log.error(d); });
 
     childProcess.on('exit', function(code) {
       if (code > 0) {
