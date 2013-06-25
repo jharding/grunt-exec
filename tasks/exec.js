@@ -17,6 +17,7 @@ module.exports = function(grunt) {
       , stdout = data.stdout !== undefined ? data.stdout : true
       , stderr = data.stderr !== undefined ? data.stderr : true
       , callback = _.isFunction(data.callback) ? data.callback : function() {}
+      , exitCode = data.exitCode || 0
       , command
       , childProcess
       , args = [].slice.call(arguments, 0)
@@ -44,13 +45,15 @@ module.exports = function(grunt) {
     }
 
     verbose.subhead(command);
+    verbose.writeln(f('Expecting exit code %d', exitCode));
+
     childProcess = cp.exec(command, execOptions, callback);
 
     stdout && childProcess.stdout.on('data', function (d) { log.write(d); });
     stderr && childProcess.stderr.on('data', function (d) { log.error(d); });
 
     childProcess.on('exit', function(code) {
-      if (code > 0) {
+      if (code !== exitCode) {
         log.error(f('Exited with code: %d.', code));
         return done(false);
       }
