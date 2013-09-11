@@ -3,6 +3,7 @@
 // * GitHub: https://github.com/jharding/grunt-exec
 // * Copyright (c) 2012 Jake Harding
 // * Licensed under the MIT license.
+'use strict';
 
 module.exports = function(grunt) {
   var cp = require('child_process')
@@ -18,6 +19,7 @@ module.exports = function(grunt) {
       , stderr = data.stderr !== undefined ? data.stderr : true
       , callback = _.isFunction(data.callback) ? data.callback : function() {}
       , exitCode = data.exitCode || 0
+      , exitCodes = exitCode.length ? exitCode : [exitCode]
       , command
       , childProcess
       , args = [].slice.call(arguments, 0)
@@ -45,7 +47,7 @@ module.exports = function(grunt) {
     }
 
     verbose.subhead(command);
-    verbose.writeln(f('Expecting exit code %d', exitCode));
+    verbose.writeln(f('Expecting exit code %s', exitCodes.join(' or ')));
 
     childProcess = cp.exec(command, execOptions, callback);
 
@@ -53,7 +55,7 @@ module.exports = function(grunt) {
     stderr && childProcess.stderr.on('data', function (d) { log.error(d); });
 
     childProcess.on('exit', function(code) {
-      if (code !== exitCode) {
+      if (exitCodes.indexOf(code) < 0) {
         log.error(f('Exited with code: %d.', code));
         return done(false);
       }
