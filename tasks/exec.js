@@ -17,6 +17,8 @@ module.exports = function(grunt) {
       , stdout = data.stdout !== undefined ? data.stdout : true
       , stderr = data.stderr !== undefined ? data.stderr : true
       , callback = _.isFunction(data.callback) ? data.callback : function() {}
+      , onOutData = _.isFunction(data.onOutData) ? data.onOutData : function (d) { log.write(d); }
+      , onErrData = _.isFunction(data.onErrData) ? data.onErrData : function (d) { log.write(d); }
       , exitCode = data.exitCode || 0
       , command
       , childProcess
@@ -49,8 +51,8 @@ module.exports = function(grunt) {
 
     childProcess = cp.exec(command, execOptions, callback);
 
-    stdout && childProcess.stdout.on('data', function (d) { log.write(d); });
-    stderr && childProcess.stderr.on('data', function (d) { log.error(d); });
+    stdout && childProcess.stdout.on('data', onOutData);
+    stderr && childProcess.stderr.on('data', onErrData);
 
     childProcess.on('exit', function(code) {
       if (code !== exitCode) {
