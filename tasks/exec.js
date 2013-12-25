@@ -17,11 +17,14 @@ module.exports = function(grunt) {
       , stdout = data.stdout !== undefined ? data.stdout : true
       , stderr = data.stderr !== undefined ? data.stderr : true
       , callback = _.isFunction(data.callback) ? data.callback : function() {}
-      , exitCode = data.exitCode || 0
+      , exitCodes = data.exitCode || data.exitCodes || 0
       , command
       , childProcess
       , args = [].slice.call(arguments, 0)
       , done = this.async();
+
+    // https://github.com/jharding/grunt-exec/pull/30
+    exitCodes = _.isArray(exitCodes) ? exitCodes : [exitCodes];
 
     // allow for command to be specified in either
     // 'command' or 'cmd' property
@@ -45,7 +48,7 @@ module.exports = function(grunt) {
     }
 
     verbose.subhead(command);
-    verbose.writeln(f('Expecting exit code %d', exitCode));
+    verbose.writeln(f('Expecting exit code %s', exitCodes.join(' or ')));
 
     childProcess = cp.exec(command, execOptions, callback);
 
@@ -53,7 +56,7 @@ module.exports = function(grunt) {
     stderr && childProcess.stderr.on('data', function (d) { log.error(d); });
 
     childProcess.on('exit', function(code) {
-      if (code !== exitCode) {
+      if (exitCodes.indexOf(code) < 0) {
         log.error(f('Exited with code: %d.', code));
         return done(false);
       }

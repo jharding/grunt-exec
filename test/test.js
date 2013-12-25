@@ -4,7 +4,14 @@ var grunt = require('grunt')
   , assert = require('assert')
   , testDir = path.join(process.cwd(), 'test')
   , opts = { gruntfile: path.join(testDir, 'Gruntfile.js') }
-  , tasks = ['exec:test1', 'exec:test2', 'exec:test3:42:love', 'exec:test4'];
+  , tasks = [
+      'exec:test1'
+    , 'exec:test2'
+    , 'exec:test3:42:love'
+    , 'exec:test4'
+    , 'exec:test5'
+    , 'exec:test6'
+    ];
 
 grunt.tasks(tasks, opts, function() {
   var tests = [
