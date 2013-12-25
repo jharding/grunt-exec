@@ -1,7 +1,7 @@
 {
   "name": "grunt-exec",
   "description": "Grunt task for executing shell commands.",
-  "version": "0.4.2",
+  "version": "0.4.3",
   "homepage": "https://github.com/jharding/grunt-exec",
   "author": {
     "name": "Jake Harding",
