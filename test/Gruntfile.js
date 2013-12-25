@@ -20,14 +20,23 @@ module.exports = function(grunt) {
     , test4: {
         cmd: function(){
           return 'echo "you can use callback, and error, stdout, stderr can be used as arguments"';
-        },
-        callback: function(error, stdout, stderr){
-          var fs = require('fs');
-          var path = require('path');
-          var outputPath = path.resolve(process.cwd(), 'test4');
+        }
+      , callback: function(error, stdout, stderr){
+          var fs = require('fs')
+            , path = require('path')
+            , outputPath = path.resolve(process.cwd(), 'test4');
+
           console.log('outputPath : ' + outputPath);
           fs.writeFileSync(outputPath, stdout, 'utf-8');
         }
+      }
+    , test5: {
+        cmd: 'exit 8'
+      , exitCodes: 8
+      }
+    , test6: {
+        cmd: 'exit 9'
+      , exitCodes: [8, 9]
       }
     }
   });

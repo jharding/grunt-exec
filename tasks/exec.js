@@ -3,7 +3,6 @@
 // * GitHub: https://github.com/jharding/grunt-exec
 // * Copyright (c) 2012 Jake Harding
 // * Licensed under the MIT license.
-'use strict';
 
 module.exports = function(grunt) {
   var cp = require('child_process')
@@ -18,12 +17,14 @@ module.exports = function(grunt) {
       , stdout = data.stdout !== undefined ? data.stdout : true
       , stderr = data.stderr !== undefined ? data.stderr : true
       , callback = _.isFunction(data.callback) ? data.callback : function() {}
-      , exitCode = data.exitCode || 0
-      , exitCodes = exitCode.length ? exitCode : [exitCode]
+      , exitCodes = data.exitCode || data.exitCodes || 0
       , command
       , childProcess
       , args = [].slice.call(arguments, 0)
       , done = this.async();
+
+    // https://github.com/jharding/grunt-exec/pull/30
+    exitCodes = _.isArray(exitCodes) ? exitCodes : [exitCodes];
 
     // allow for command to be specified in either
     // 'command' or 'cmd' property
