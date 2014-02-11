@@ -27,8 +27,8 @@ module.exports = function(grunt) {
     exitCodes = _.isArray(exitCodes) ? exitCodes : [exitCodes];
 
     // allow for command to be specified in either
-    // 'command' or 'cmd' property
-    command = data.command || data.cmd;
+    // 'command' or 'cmd' property, or as a string.
+    command = data.command || data.cmd || (_.isString(data) && data);
 
     data.cwd && (execOptions.cwd = data.cwd);
     data.maxBuffer && (execOptions.maxBuffer = data.maxBuffer);
