@@ -11,6 +11,7 @@ var grunt = require('grunt')
     , 'exec:test4'
     , 'exec:test5'
     , 'exec:test6'
+    , 'exec:test7'
     ];
 
 grunt.tasks(tasks, opts, function() {
@@ -27,6 +28,7 @@ grunt.tasks(tasks, opts, function() {
           name: 'test4'
         , expected:'you can use callback, and error, stdout, stderr can be used as arguments\n'
         }
+      , { name: 'test7', expected: 'you don\'t even need an object\n' }
       ]
     , outputPath;
 

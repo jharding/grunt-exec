@@ -38,6 +38,7 @@ module.exports = function(grunt) {
         cmd: 'exit 9'
       , exitCodes: [8, 9]
       }
+    , test7: 'echo "you don\'t even need an object" > test7'
     }
   });
 
