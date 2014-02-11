@@ -44,6 +44,15 @@ grunt-exec will assume an error has occurred and will abort grunt immediately.
 *  __callback__: The callback function passed `child_process.exec`. Defaults to 
   a noop.
 
+If the configuration is instead a simple `string`, it will be
+interpreted as a full command itself:
+
+```javascript
+exec: {
+  echo_something: 'echo "This is something"'
+}
+```
+
 ### Command Functions
 
 If you plan on doing advanced stuff with grunt-exec, you'll most likely be using 
@@ -94,6 +103,7 @@ grunt.initConfig({
     list_files: {
       cmd: 'ls -l **'
     },
+    list_all_files: 'ls -la',
     echo_grunt_version: {
       cmd: function() { return 'echo ' + this.version; }
     },

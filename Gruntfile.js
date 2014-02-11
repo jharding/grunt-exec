@@ -9,6 +9,7 @@ module.exports = function(grunt) {
     , list_files: {
         cmd: 'ls -l **'
       }
+    , list_all_files: 'ls -la'
     , echo_grunt_version: {
         cmd: function() { return 'echo ' + this.version; }
       }
