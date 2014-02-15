@@ -155,5 +155,5 @@ For more information on semantic versioning, please visit http://semver.org/.
 License
 -------
 
-Copyright (c) 2012 [Jake Harding](http://thejakeharding.com)  
+Copyright (c) 2012-2014 [Jake Harding](http://thejakeharding.com)  
 Licensed under the MIT License.
