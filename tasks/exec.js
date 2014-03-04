@@ -13,7 +13,7 @@ module.exports = function(grunt) {
 
   grunt.registerMultiTask('exec', 'Execute shell commands.', function() {
     var data = this.data
-      , execOptions = {}
+      , execOptions = data.options !== undefined ? data.options : {}
       , stdout = data.stdout !== undefined ? data.stdout : true
       , stderr = data.stderr !== undefined ? data.stderr : true
       , callback = _.isFunction(data.callback) ? data.callback : function() {}
