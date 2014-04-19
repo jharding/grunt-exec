@@ -25,7 +25,7 @@
     "node": ">=0.8.0"
   },
   "scripts": {
-    "test": "/usr/bin/env node test/test.js"
+    "test": "node test/test.js"
   },
   "peerDependencies": {
     "grunt": "~0.4"

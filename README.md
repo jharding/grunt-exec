@@ -43,6 +43,8 @@ grunt-exec will assume an error has occurred and will abort grunt immediately.
   for multiple allowed exit codes.
 *  __callback__: The callback function passed `child_process.exec`. Defaults to 
   a noop.
+* __outputProperty__: Name of a grunt property whose value will be the stdout
+  of the command
 
 If the configuration is instead a simple `string`, it will be
 interpreted as a full command itself:
