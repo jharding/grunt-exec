@@ -16,8 +16,12 @@ module.exports = function(grunt) {
       , execOptions = data.options !== undefined ? data.options : {}
       , stdout = data.stdout !== undefined ? data.stdout : true
       , stderr = data.stderr !== undefined ? data.stderr : true
-      , callback = _.isFunction(data.callback) ? data.callback : function() {}
+      , defaultCallback = function(err, stdout, stderr) {
+          outputProperty && grunt.config(outputProperty, stdout.toString());
+        }
+      , callback = _.isFunction(data.callback) ? data.callback : defaultCallback
       , exitCodes = data.exitCode || data.exitCodes || 0
+      , outputProperty = data.outputProperty
       , command
       , childProcess
       , args = [].slice.call(arguments, 0)
