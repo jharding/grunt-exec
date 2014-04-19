@@ -1,4 +1,5 @@
 var grunt = require('grunt')
+  , lf = grunt.util.linefeed
   , path = require('path')
   , fs = require('fs')
   , assert = require('assert')
@@ -16,19 +17,19 @@ var grunt = require('grunt')
 
 grunt.tasks(tasks, opts, function() {
   var tests = [
-        { name: 'test1', expected: 'bruce willis was dead\n' }
-      , { name: 'test2' , expected: 'grunt@' + grunt.version + '\n' }
+        { name: 'test1', expected: 'bruce willis was dead' + lf }
+      , { name: 'test2' , expected: 'grunt@' + grunt.version + lf }
       , {
           name: 'test3'
         , expected: [
-            'the answer to life is 42', 'thoughts on tacos? love', ''
-          ].join('\n')
+            'the answer to life is 42', 'thoughts on tacos? love'
+          ].join(', ') + lf
         }
       , {
           name: 'test4'
-        , expected:'you can use callback, and error, stdout, stderr can be used as arguments\n'
+        , expected:'you can use callback, and error, stdout, stderr can be used as arguments' + lf
         }
-      , { name: 'test7', expected: 'you don\'t even need an object\n' }
+      , { name: 'test7', expected: 'you do not even need an object' + lf }
       ]
     , outputPath;
 
