@@ -55,6 +55,13 @@ module.exports = function(grunt) {
     stdout && childProcess.stdout.on('data', function (d) { log.write(d); });
     stderr && childProcess.stderr.on('data', function (d) { log.error(d); });
 
+    // Catches failing to execute the command at all (eg spawn ENOENT),
+    // since in that case an 'exit' event will not be emitted.
+    childProcess.on('error', function (err) {
+      log.error(f('child_process.exec() failed with: %s', err));
+      done(false);
+    });
+
     childProcess.on('exit', function(code) {
       if (exitCodes.indexOf(code) < 0) {
         log.error(f('Exited with code: %d.', code));
