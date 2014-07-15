@@ -58,7 +58,7 @@ module.exports = function(grunt) {
     // Catches failing to execute the command at all (eg spawn ENOENT),
     // since in that case an 'exit' event will not be emitted.
     childProcess.on('error', function (err) {
-      log.error(f('child_process.exec() failed with: %s', err));
+      log.error(f('Failed with: %s', err));
       done(false);
     });
 
