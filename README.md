@@ -83,7 +83,25 @@ exec: {
 In order to get `SIMPSON, HOMER` echoed, you'd run 
 `grunt exec:echo_name:homer:simpson` from the command line.
 
-### Accessing `grunt` object
+### Multiple commands
+
+Run multiple commands by placing them in an array which is joined using `&&` or `;`. `&&` means run this only if the previous command succeeded. You can also use `&` to have the commands run concurrently (by executing all commands except the last one in a subshell).
+
+```js
+grunt.initConfig({
+	shell: {
+		multiple: {
+			command: [
+				'mkdir test',
+				'cd test',
+				'ls'
+			].join('&&')
+		}
+	}
+});
+```
+
+### Accessing the `grunt` object
 
 All command functions are called in the context of the `grunt` object that they 
 are being ran with. This means you can access the `grunt` object through `this`.
