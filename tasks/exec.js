@@ -50,7 +50,7 @@ module.exports = function(grunt) {
     verbose.subhead(command);
     verbose.writeln(f('Expecting exit code %s', exitCodes.join(' or ')));
 
-    childProcess = cp.exec(command, execOptions, callback);
+    childProcess = cp.exec(command, execOptions, callback.bind(grunt));
 
     stdout && childProcess.stdout.on('data', function (d) { log.write(d); });
     stderr && childProcess.stderr.on('data', function (d) { log.error(d); });
