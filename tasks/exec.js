@@ -16,7 +16,7 @@ module.exports = function(grunt) {
       , execOptions = data.options !== undefined ? data.options : {}
       , stdout = data.stdout !== undefined ? data.stdout : true
       , stderr = data.stderr !== undefined ? data.stderr : true
-      , stdin = data.stdin !== undefined ? data.stdin : true
+      , stdin = data.stdin !== undefined ? data.stdin : false
       , callback = _.isFunction(data.callback) ? data.callback : function() {}
       , exitCodes = data.exitCode || data.exitCodes || 0
       , command
