@@ -17,6 +17,7 @@ module.exports = function(grunt) {
       , execOptions = data.options !== undefined ? data.options : {}
       , stdout = data.stdout !== undefined ? data.stdout : true
       , stderr = data.stderr !== undefined ? data.stderr : true
+      , stdin = data.stdin !== undefined ? data.stdin : false
       , callback = _.isFunction(data.callback) ? data.callback : function() {}
       , exitCodes = data.exitCode || data.exitCodes || 0
       , command
@@ -55,6 +56,16 @@ module.exports = function(grunt) {
 
     stdout && childProcess.stdout.on('data', function (d) { log.write(d); });
     stderr && childProcess.stderr.on('data', function (d) { log.error(d); });
+
+    // redirect stdin to childProcess
+    if(stdin){
+      process.stdin.on('readable', function() {
+        var chunk = process.stdin.read();
+        if (chunk !== null) {
+          childProcess.stdin.write(chunk);
+        }
+      });
+    }
 
     // Catches failing to execute the command at all (eg spawn ENOENT),
     // since in that case an 'exit' event will not be emitted.
