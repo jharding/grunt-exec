@@ -10,7 +10,7 @@ Installation
 Install grunt-exec using npm:
 
 ```
-$ npm install grunt-exec
+$ npm install grunt-exec --save-dev
 ```
 
 Then add this line to your project's *Gruntfile.js*:
@@ -155,5 +155,6 @@ For more information on semantic versioning, please visit http://semver.org/.
 License
 -------
 
-Copyright (c) 2012-2014 [Jake Harding](http://thejakeharding.com)  
-Licensed under the MIT License.
+Original Copyright (c) 2012-2014 [Jake Harding](http://thejakeharding.com)
+Copyright (c) 2016 grunt-exec
+Licensed under the [MIT License](http://www.opensource.org/licenses/mit-license.php).
