@@ -43,6 +43,16 @@ grunt-exec will assume an error has occurred and will abort grunt immediately.
   for multiple allowed exit codes.
 *  __callback__: The callback function passed `child_process.exec`. Defaults to 
   a noop.
+* __options__: Specify some options to be passed to the [.exec()](http://nodejs.org/api/child_process.html#child_process_child_process_exec_command_options_callback) method:
+
+  - `cwd` String *Current working directory of the child process*
+  - `env` Object *Environment key-value pairs*
+  - `setsid` Boolean
+  - `encoding` String *(Default: 'utf8')*
+  - `timeout` Number *(Default: 0)*
+  - `maxBuffer` Number *(Default: 200\*1024)*
+  - `killSignal` String *(Default: 'SIGTERM')*
+
 
 If the configuration is instead a simple `string`, it will be
 interpreted as a full command itself:
