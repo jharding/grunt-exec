@@ -34,6 +34,7 @@ grunt-exec will assume an error has occurred and will abort grunt immediately.
 
 *  __command__ (alias: __cmd__): The shell command to be executed. Must be a 
   string or a function that returns a string.
+*  __stdin__: If `true`, stdin will be redirected from the child process to the current process allowing user interactivity (EXPERIMENTAL)
 *  __stdout__: If `true`, stdout will be printed. Defaults to `true`.
 *  __stderr__: If `true`, stderr will be printed. Defaults to `true`.
 *  __cwd__: Current working directory of the shell command. Defaults to the 
