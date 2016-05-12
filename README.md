@@ -49,7 +49,7 @@ grunt-exec will assume an error has occurred and will abort grunt immediately.
   - `encoding` String *(Default: 'utf8')*
   - `shell` String Shell to execute the command with *(Default: '/bin/sh' on UNIX, 'cmd.exe' on Windows, The shell should understand the -c switch on UNIX or /s /c on Windows. On Windows, command line parsing should be compatible with cmd.exe.)*
   - `timeout` Number *(Default: 0)*
-  - `maxBuffer` Number largest amount of data (in bytes) allowed on stdout or stderr - if exceeded child process is killed *(Default: 200\*1024)*
+  - `maxBuffer` Number largest amount of data (in bytes) allowed on stdout or stderr - if exceeded child process is killed **(Default: 200*1024)**
   - `killSignal` String *(Default: 'SIGTERM')*
   - `uid` Number Sets the user identity of the process. (See [setuid(2)](http://man7.org/linux/man-pages/man2/setuid.2.html).)
   - `gid` Number Sets the group identity of the process. (See [setgid(2)](http://man7.org/linux/man-pages/man2/setgid.2.html).)
