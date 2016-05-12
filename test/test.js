@@ -27,7 +27,8 @@ grunt.tasks(tasks, opts, function() {
         }
       , {
           name: 'test4'
-        , expected:'you can use callback, and error, stdout, stderr can be used as arguments' + lf
+        , expected:'you can use callback, and error, stdout, stderr can be' +
+          ' used as arguments' + lf
         }
       , { name: 'test7', expected: 'you do not even need an object' + lf }
       ]

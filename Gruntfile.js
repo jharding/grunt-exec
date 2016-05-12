@@ -2,34 +2,37 @@ module.exports = function(grunt) {
   grunt.initConfig({
     exec: {
       remove_logs: {
-        command: 'rm -f *.log'
+        command: process.platform === 'win32' ? 'del *.log' : 'rm -f *.log'
       , stdout: false
       , stderr: false
       }
     , list_files: {
-        cmd: 'ls -l **'
+        cmd: process.platform === 'win32' ? 'dir' : 'ls -l **'
       }
-    , list_all_files: 'ls -la'
+    , list_all_files: process.platform === 'win32' ? 'dir' : 'ls -la'
     , echo_grunt_version: {
         cmd: function() { return 'echo ' + this.version; }
       }
     , print_name: {
         cmd: function(firstName, lastName) {
           var formattedName = [
-                lastName.toUpperCase()
-              , firstName.toUpperCase()
+                (lastName || 'grunt').toUpperCase()
+              , (firstName || 'exec').toUpperCase()
               ].join(', ');
 
           return 'echo ' + formattedName;
         }
       }
     , test_callback: {
-        cmd : 'ls -h',
+        cmd : process.platform === 'win32' ? 'dir' : 'ls -h',
         callback : function(error, stdout, stderr){
           var cp = require('child_process');
           var util = require('util');
           console.log(util.inspect(cp));
-          console.log('callback is ok, you can use error,stdout,stderr as arguments');
+          console.log('you can use callback, and error, stdout, stderr can be' +
+           ' used as arguments.');
+          console.log('stdout: ' + stdout);
+          console.log('stderr: ' + stderr);
         }
       }
     }

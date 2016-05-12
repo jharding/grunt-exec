@@ -1,7 +1,8 @@
 // grunt-exec
 // ==========
 // * GitHub: https://github.com/jharding/grunt-exec
-// * Copyright (c) 2012 Jake Harding
+// * Original Copyright (c) 2012 Jake Harding
+// * Copyright (c) 2016 grunt-exec
 // * Licensed under the MIT license.
 
 module.exports = function(grunt) {
