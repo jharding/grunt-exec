@@ -7,6 +7,9 @@
     "name": "Jake Harding",
     "email": "jacob.s.harding@gmail.com"
   },
+  "contributors": [
+    "Graeme Wicksted <graeme.wicksted@gmail.com>"
+  ],
   "repository": {
     "type": "git",
     "url": "git://github.com/jharding/grunt-exec.git"
@@ -14,12 +17,7 @@
   "bugs": {
     "url": "https://github.com/jharding/grunt-exec/issues"
   },
-  "licenses": [
-    {
-      "type": "MIT",
-      "url": "https://github.com/jharding/grunt-exec/blob/master/LICENSE-MIT"
-    }
-  ],
+  "license": "MIT",
   "main": "Gruntfile.js",
   "engines": {
     "node": ">=0.8.0"
@@ -28,15 +26,17 @@
     "test": "node test/test.js"
   },
   "peerDependencies": {
-    "grunt": "~0.4"
+    "grunt": ">=0.4"
   },
   "devDependencies": {
-    "grunt": "~0.4",
-    "grunt-contrib-jshint": "~0.1"
+    "grunt": ">=0.4",
+    "grunt-contrib-jshint": ">=0.1"
   },
   "keywords": [
     "grunt",
     "gruntplugin",
-    "shell"
+    "shell",
+    "exec",
+    "execute"
   ]
 }
