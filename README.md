@@ -4,6 +4,9 @@ grunt-exec
 
 Grunt plugin for executing shell commands.
 
+[![NPM](https://nodei.co/npm/grunt-exec.png?downloads=true&downloadRank=true&stars=true)](https://nodei.co/npm/grunt-exec/)
+[![NPM](https://nodei.co/npm-dl/grunt-exec.png)](https://nodei.co/npm/grunt-exec/)
+
 Installation
 ------------
 
