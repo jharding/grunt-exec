@@ -13,12 +13,22 @@ module.exports = function(grunt) {
     , verbose = grunt.verbose;
 
   grunt.registerMultiTask('exec', 'Execute shell commands.', function() {
+
+    var callbackErrors = false;
+
+    var defaultCallback = function(err, stdout, stderr) {
+      if (err) {
+        callbackErrors = true;
+        log.error('Error executing child process: ' + err.toString());
+      }
+    }
+
     var data = this.data
       , execOptions = data.options !== undefined ? data.options : {}
       , stdout = data.stdout !== undefined ? data.stdout : true
       , stderr = data.stderr !== undefined ? data.stderr : true
       , stdin = data.stdin !== undefined ? data.stdin : false
-      , callback = _.isFunction(data.callback) ? data.callback : function() {}
+      , callback = _.isFunction(data.callback) ? data.callback : defaultCallback
       , exitCodes = data.exitCode || data.exitCodes || 0
       , command
       , childProcess
@@ -75,6 +85,11 @@ module.exports = function(grunt) {
     });
 
     childProcess.on('exit', function(code) {
+      if (callbackErrors) {
+        log.error("Node returned an error for this child process");
+        return done(false);
+      }
+
       if (exitCodes.indexOf(code) < 0) {
         log.error(f('Exited with code: %d.', code));
         return done(false);
