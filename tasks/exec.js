@@ -42,12 +42,21 @@ module.exports = function(grunt) {
     // 'command' or 'cmd' property, or as a string.
     command = data.command || data.cmd || (_.isString(data) && data);
 
-    data.cwd && (execOptions.cwd = data.cwd);
-    data.maxBuffer && (execOptions.maxBuffer = data.maxBuffer);
-
     if (!command) {
       log.error('Missing command property.');
       return done(false);
+    }
+
+    if (data.cwd && _.isFunction(data.cwd)) {
+      execOptions.cwd = data.cwd.apply(grunt, args);
+    } else if (data.cwd) {
+      execOptions.cwd = data.cwd;
+    }
+
+    data.maxBuffer && (execOptions.maxBuffer = data.maxBuffer);
+
+    if (verbose) {
+      verbose.writeln(f('Max stdout+stderr size is %d bytes', data.maxBuffer || (200*1024))); // 200*1024 is node's default
     }
 
     if (_.isFunction(command)) {
