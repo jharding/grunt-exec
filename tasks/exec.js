@@ -183,10 +183,6 @@ module.exports = function(grunt) {
     }
 
     if (verbose) {
-      verbose.writeln(f('Max stdout+stderr size is %d bytes', data.maxBuffer));
-    }
-
-    if (verbose) {
       stdioDescriptions = execOptions.stdio.slice();
       for (var i = 0; i < stdioDescriptions.length; i++) {
         stdioDescription = stdioDescriptions[i];
