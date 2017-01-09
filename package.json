@@ -1,7 +1,7 @@
 {
   "name": "grunt-exec",
   "description": "Grunt task for executing shell commands.",
-  "version": "1.0.1",
+  "version": "2.0.0-alpha.0",
   "homepage": "https://github.com/jharding/grunt-exec",
   "author": {
     "name": "Jake Harding",
@@ -30,13 +30,14 @@
   },
   "devDependencies": {
     "grunt": "^1.0.0",
-    "grunt-contrib-jshint": "^1.0.0"
+    "grunt-contrib-jshint": "^1.1.0"
   },
   "keywords": [
     "grunt",
     "gruntplugin",
     "shell",
     "exec",
-    "execute"
+    "execute",
+    "spawn"
   ]
 }

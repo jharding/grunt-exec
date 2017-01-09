@@ -71,7 +71,7 @@ module.exports = function(grunt) {
         }
       }
     }
-    // this should produce an error
+    // this used to produce an error when using 'exec'
     , test_large_stdout_nocallback: {
       stdout: false, // suppress the stdout otherwise you get a bunch of garbage being displayed
       
@@ -114,15 +114,40 @@ module.exports = function(grunt) {
     , test_callback: {
         cmd : process.platform === 'win32' ? 'dir' : 'ls -h',
         callback : function(error, stdout, stderr){
-          var cp = require('child_process');
           var util = require('util');
-          console.log(util.inspect(cp));
-          console.log('you can use callback, and error, stdout, stderr can be' +
-           ' used as arguments.');
+          console.log(util.inspect(error));
+          console.log('stdout: ' + stdout);
+          console.log('stderr: ' + stderr);
+        },
+        stdout: 'pipe'
+      },
+      test_callback_no_data: {
+        cmd : process.platform === 'win32' ? 'dir' : 'ls -h',
+        callback : function(error, stdout, stderr){
+          var util = require('util');
+          console.log(util.inspect(error));
           console.log('stdout: ' + stdout);
           console.log('stderr: ' + stderr);
         }
-      }
+      },
+      npm_outdated_color_test: {
+        command: 'npm outdated --long --ansi --color',
+        stdout: 'inherit',
+        stderr: 'inherit'
+      },
+      set_user_input: {
+        cmd: 'set /p TestCurrentUserName= "Enter your name:  "',
+        stdout: 'inherit',
+        stderr: 'inherit',
+        stdin: 'inherit'
+      },
+      test_timeout: {
+        cmd: 'set /p TestCurrentUserName= "Please do not enter your name:  "',
+        stdout: 'inherit',
+        stderr: 'inherit',
+        stdin: 'inherit',
+        timeout: 500
+      },
     }
 
   , jshint: {
