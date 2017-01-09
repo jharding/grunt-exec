@@ -38,12 +38,12 @@ module.exports = function(grunt) {
         }
       }
     , test5: {
-        cmd: 'exit 8'
+        cmd: 'node -e "process.exit(8);"'
       , exitCodes: 8
       , detached: true
       }
     , test6: {
-        cmd: 'exit 9'
+        cmd: 'node -e "process.exit(9);"'
       , exitCodes: [8, 9]
       , detached: true
       }
