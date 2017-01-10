@@ -40,12 +40,12 @@ module.exports = function(grunt) {
     , test5: {
         cmd: 'node -e "process.exit(8);"'
       , exitCodes: 8
-      , detached: true
+      , shell: true
       }
     , test6: {
         cmd: 'node -e "process.exit(9);"'
       , exitCodes: [8, 9]
-      , detached: true
+      , shell: true
       }
     , test7: 'echo you do not even need an object> test7'
     }

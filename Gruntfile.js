@@ -148,6 +148,14 @@ module.exports = function(grunt) {
         stdin: 'inherit',
         timeout: 500
       },
+      test_stdio_inherit: {
+        cmd: 'npm list',
+        stdio: 'inherit'
+      },
+      test_stdio_ignore: {
+        cmd: 'npm list',
+        stdio: 'ignore'
+      }
     }
 
   , jshint: {

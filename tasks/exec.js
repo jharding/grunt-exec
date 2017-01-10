@@ -42,6 +42,7 @@ module.exports = function(grunt) {
       , stdout = data.stdout !== undefined ? data.stdout : true
       , stderr = data.stderr !== undefined ? data.stderr : true
       , stdin = data.stdin !== undefined ? data.stdin : false
+      , stdio = data.stdio
       , callback = _.isFunction(data.callback) ? data.callback : defaultCallback
       , exitCodes = data.exitCode || data.exitCodes || 0
       , command
@@ -81,10 +82,26 @@ module.exports = function(grunt) {
     execOptions.killSignal = execOptions.killSignal || data.killSignal || 'SIGTERM';
 
     // support shell scripts like 'npm.cmd' by default (spawn vs exec)
-    execOptions.shell = execOptions.shell === false ? false : true;
+    var shell = (typeof data.shell === 'undefined') ? execOptions.shell : data.shell;
+    execOptions.shell = (typeof shell === 'string') ? shell : (shell === false ? false : true);
 
     // kept in data.encoding in case it is set to 'buffer' for final callback
     data.encoding = data.encoding || execOptions.encoding || 'utf8';
+
+    stdio = stdio || execOptions.stdio || undefined;
+    if (stdio === 'inherit') {
+      stdout = 'inherit';
+      stderr = 'inherit';
+      stdin = 'inherit';
+    } else if (stdio === 'pipe') {
+      stdout = 'pipe';
+      stderr = 'pipe';
+      stdin = 'pipe';
+    } else if (stdio === 'ignore') {
+      stdout = 'ignore';
+      stderr = 'ignore';
+      stdin = 'ignore';
+    }
 
     if (_.isFunction(command)) {
       command = command.apply(grunt, args);
@@ -155,8 +172,8 @@ module.exports = function(grunt) {
     var stdioOption = function(value, integerValue, inheritValue) {
       return value === integerValue ? integerValue
         : value === 'inherit' ? inheritValue
-        : value !== false || bufferedOutput ? 'pipe' /* value === 'pipe' || value === true || value === null || value === undefined ... */
-        : 'ignore'; /* value === false */
+        : bufferedOutput ? 'pipe' : value === 'pipe' || value === true || value === null || value === undefined ? 'pipe'
+        : 'ignore'; /* value === false || value === 'ignore' */
     }
 
     execOptions.stdio = [
