@@ -44,6 +44,7 @@ module.exports = function(grunt) {
       , stdin = data.stdin !== undefined ? data.stdin : false
       , stdio = data.stdio
       , callback = _.isFunction(data.callback) ? data.callback : defaultCallback
+      , sync = data.sync !== undefined ? data.sync : false
       , exitCodes = data.exitCode || data.exitCodes || 0
       , command
       , childProcess
@@ -230,7 +231,13 @@ module.exports = function(grunt) {
       verbose.writeln('exitcodes:', exitCodes.join(','));
     }
 
-    childProcess = cp.spawn(command, args, execOptions);
+    if (sync)
+    {
+      childProcess = cp.spawnSync(command, args, execOptions);
+    }
+    else {
+      childProcess = cp.spawn(command, args, execOptions);
+    }
 
     if (verbose) {
       verbose.writeln('pid     : ' + childProcess.pid);
@@ -288,22 +295,37 @@ module.exports = function(grunt) {
 
     if (execOptions.stdio[1] === 'pipe') {
       var pipeOut = bufferedStdOut ? writeStdOutBuffer : defaultOut;
-      childProcess.stdout.on('data', function (d) { pipeOut(d); });
+      // Asynchronous + Synchronous Support
+      if (sync) { pipeOut(childProcess.stdout); }
+      else { childProcess.stdout.on('data', function (d) { pipeOut(d); }); }
     }
 
     if (execOptions.stdio[2] === 'pipe') {
       var pipeErr = bufferedStdErr ? writeStdErrBuffer : defaultError;
-      childProcess.stderr.on('data', function (d) { pipeErr(d); });
+      // Asynchronous + Synchronous Support
+      if (sync) { pipeOut(childProcess.stderr); }
+      else { childProcess.stderr.on('data', function (d) { pipeErr(d); }); }
     }
 
     // Catches failing to execute the command at all (eg spawn ENOENT),
     // since in that case an 'exit' event will not be emitted.
-    childProcess.on('error', function (err) {
-      defaultError(f('Failed with: %s', err));
-      done(false);
-    });
+    // Asynchronous + Synchronous Support
+    if (sync) {
+      if (childProcess.error != null)
+      {
+        defaultError(f('Failed with: %s', error.message));
+        done(false);
+      }
+    }
+    else {
+      childProcess.on('error', function (err) {
+        defaultError(f('Failed with: %s', err));
+        done(false);
+      });  
+    }
 
-    childProcess.on('exit', function(code) {
+    // Exit Function (used for process exit callback / exit function)
+    var exitFunc = function (code) {
       if (callbackErrors) {
         defaultError('Node returned an error for this child process');
         return done(false);
@@ -358,6 +380,15 @@ module.exports = function(grunt) {
       }
 
       done();
-    });
+    }
+
+    // Asynchronous + Synchronous Support
+    if (sync) {
+      exitFunc(childProcess.status);
+    }
+    else {
+      childProcess.on('exit', exitFunc);      
+    }
+    
   });
 };

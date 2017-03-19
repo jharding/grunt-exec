@@ -13,6 +13,9 @@ var grunt = require('grunt')
     , 'exec:test5'
     , 'exec:test6'
     , 'exec:test7'
+    , 'exec:test8'
+    , 'exec:test9'
+    , 'exec:test10'
     ];
 
 grunt.tasks(tasks, opts, function() {
