@@ -48,6 +48,21 @@ module.exports = function(grunt) {
       , shell: true
       }
     , test7: 'echo you do not even need an object> test7'
+    , test8: {
+      cmd: 'node -e "console.log(\'synchronous echo 1\'); process.exit(0);"',
+      sync: true,
+      shell: true
+    }
+    , test9: {
+      cmd: 'node -e "setTimeout(function () { console.log(\'synchronous echo 2, wait 3 seconds\'); process.exit(0); }, 3000);"',
+      sync: true,
+      shell: true
+    }
+    , test10: {
+      cmd: 'node -e "console.log(\'synchronous echo 3\'); process.exit(0);"',
+      sync: true,
+      shell: true
+    }
     }
   });
 
