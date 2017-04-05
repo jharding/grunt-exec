@@ -44,6 +44,7 @@ module.exports = function(grunt) {
       , stdin = data.stdin !== undefined ? data.stdin : false
       , stdio = data.stdio
       , callback = _.isFunction(data.callback) ? data.callback : defaultCallback
+      , callbackArgs = data.callbackArgs !== undefined ? data.callbackArgs : []
       , sync = data.sync !== undefined ? data.sync : false
       , exitCodes = data.exitCode || data.exitCodes || 0
       , command
@@ -368,7 +369,7 @@ module.exports = function(grunt) {
           var err = new Error(f('Process exited with code %d.', code));
           err.code = code;
 
-          callback(err, stdOutBuffer, stdErrBuffer);
+          callback(err, stdOutBuffer, stdErrBuffer, callbackArgs);
         }
         return done(false);
       }
@@ -376,7 +377,7 @@ module.exports = function(grunt) {
       verbose.ok(f('Exited with code: %d.', code));
 
       if (callback) {
-        callback(null, stdOutBuffer, stdErrBuffer);
+        callback(null, stdOutBuffer, stdErrBuffer, callbackArgs);
       }
 
       done();
