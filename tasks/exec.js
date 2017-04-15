@@ -63,6 +63,11 @@ module.exports = function(grunt) {
       defaultError('Missing command property.');
       return done(false);
     }
+    
+    // allow callback function before test if string
+    if (utils._.isFunction(data.command)) {  
+        data.command = data.command(); 
+    } 
 
     if (data.cwd && _.isFunction(data.cwd)) {
       execOptions.cwd = data.cwd.apply(grunt, args);
