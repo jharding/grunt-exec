@@ -137,6 +137,8 @@ grunt.initConfig({
 });
 ```
 
+Heres a tutorial on how to use [grunt-exec](http://grunt-tasks.com/grunt-exec/ "grunt-exec")
+
 Testing
 -------
 
