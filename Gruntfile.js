@@ -1,6 +1,7 @@
 module.exports = function(grunt) {
   grunt.initConfig({
     exec: {
+      create_dir: { cmd: 'mkdir "tmp dir"' },
       remove_logs: {
         command: process.platform === 'win32' ? 'del *.log' : 'rm -f *.log'
       , stdout: false
@@ -33,9 +34,16 @@ module.exports = function(grunt) {
       },
       callback: function(err, stdout, stderr) {
         console.log('stdout: ' + stdout);
-        if ((stdout + "").trim() !== `mysql -u "abc" -p"password" -e "CREATE DATABASE IF NOT EXISTS 'database-with-dashes';"`) {
-          grunt.log.error("Unexpected result: " + stdout);
-          return false;
+        if (process.platform === 'win32') {
+          if ((stdout + "").trim() !== `mysql -u "abc" -p"password" -e "CREATE DATABASE IF NOT EXISTS 'database-with-dashes';"`) {
+            grunt.log.error("Unexpected result: " + stdout);
+            return false;
+          }
+        } else {
+          if ((stdout + "").trim() !== `mysql -u abc -ppassword -e CREATE DATABASE IF NOT EXISTS 'database-with-dashes';`) {
+            grunt.log.error("Unexpected result: " + stdout);
+            return false;
+          }
         }
       }
     }
