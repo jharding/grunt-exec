@@ -29,11 +29,11 @@ module.exports = function(grunt) {
         var DB_USER = "abc";
         var DB_PASSWORD = "password";
         var DATABASE = "database-with-dashes";
-        return `echo mysql -u "${DB_USER}" -p"${DB_PASSWORD}" -e "CREATE DATABASE IF NOT EXISTS \`${DATABASE}\`;"`;
+        return `echo mysql -u "${DB_USER}" -p"${DB_PASSWORD}" -e "CREATE DATABASE IF NOT EXISTS \'${DATABASE}\';"`;
       },
       callback: function(err, stdout, stderr) {
         console.log('stdout: ' + stdout);
-        if ((stdout + "").trim() !== 'mysql -u "abc" -p"password" -e "CREATE DATABASE IF NOT EXISTS `database-with-dashes`;"') {
+        if ((stdout + "").trim() !== `mysql -u "abc" -p"password" -e "CREATE DATABASE IF NOT EXISTS 'database-with-dashes';"`) {
           grunt.log.error("Unexpected result: " + stdout);
           return false;
         }

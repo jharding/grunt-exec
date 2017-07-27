@@ -155,6 +155,20 @@ module.exports = function(grunt) {
         }
       }
 
+      // NodeJS on Windows does not have this issue
+      if (process.platform !== 'win32') {
+        for (var i = 0; i < args.length; i++) {
+          // NOTE: there may be other characters that require escaping!
+          // Find ; or " or ' that is not preceeded by a slash and add a slash
+          // Syntax a little odd due to JavaScript having no negative-lookbehind support for Regex
+          // so it matches the previous character with a positive lookahead assertion
+          // Cannot match both characters since two side-by-side would cause the 2nd to not be a match (such as semi-colon double-quote)
+          args[i] = args[i].replace(/(^|[^\\])(?=[";'])/g, function($0,$1) { return $1 + "\\"; });
+        }
+      }
+
+      console.log(inspect(args, false, null));
+
       return args;
     };
 
