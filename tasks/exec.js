@@ -167,8 +167,6 @@ module.exports = function(grunt) {
         }
       }
 
-      console.log(inspect(args, false, null));
-
       return args;
     };
 
