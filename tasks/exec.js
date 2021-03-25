@@ -78,9 +78,9 @@ module.exports = function(grunt) {
     // NOTE: must be < require('buffer').kMaxLength or a RangeError will be triggered
     var maxBuffer = data.maxBuffer || execOptions.maxBuffer || (200*1024);
 
-    // timeout manually supportted (spawn vs exec)
+    // timeout manually supported (spawn vs exec)
     execOptions.timeout = execOptions.timeout || data.timeout || 0;
-    // kill signal manually supportted (spawn vs exec)
+    // kill signal manually supported (spawn vs exec)
     execOptions.killSignal = execOptions.killSignal || data.killSignal || 'SIGTERM';
 
     // support shell scripts like 'npm.cmd' by default (spawn vs exec)
